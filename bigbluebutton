@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#INFO: http://munin-monitoring.org/wiki/HowToWritePlugins
+
 SERVER_MUNIN="server.munin.com"
 BBB_URL_SERVER=$(bbb-conf --salt | grep URL | awk '{print $2}')
 BBB_SALT_SERVER=$(bbb-conf --salt | grep Salt | awk '{print $2}')

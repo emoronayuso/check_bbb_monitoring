@@ -4,7 +4,6 @@ import urllib, urllib2, socket
 import hashlib, random
 from xml.dom import minidom 
 from xml.dom.minidom import Node 
-import commands
 import argparse
 
 
@@ -189,11 +188,6 @@ def participant_count(host, salt):
     total_meetings = 0
     meetings = []
 
-    #url = str(commands.getstatusoutput("bbb-conf --salt | grep URL | awk '{print $2}'")[1])
-    #salt = str(commands.getstatusoutput("bbb-conf --salt | grep Salt | awk '{print $2}'")[1])
-
-    #print getMeetings(host, salt)
-
     if getMeetings(host, salt)['meetings'] != None:
         meetings = getMeetings(host, salt)
         for meeting, value in meetings['meetings'].iteritems():
@@ -210,17 +204,6 @@ def main():
     requiredNamed.add_argument("-H","--host", required=True, help="Nombre del servidor de Bigbluebutton")
     requiredNamed.add_argument("-S","--salt", required=True, help="Salt del servidor")
     args = parser.parse_args()
-    #args = requiredNamed.parse_args()
-
- #   print args.host
- #   print args.salt
- #   cat <<'EOM'
- #         graph_title Jenkins queue
- #         graph_category Jenkins
- #         graph_vlabel jobs
- #         load.label Num of Jobs
- #         EOM
-
 
     participant_count(args.host, args.salt)
 
