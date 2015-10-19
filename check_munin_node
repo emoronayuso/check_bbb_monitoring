@@ -1,0 +1,30 @@
+#!/bin/sh
+
+SERVER_MUNIN="server.munin.com"
+BBB_URL_SERVER=$(bbb-conf --salt | grep URL | awk '{print $2}')
+BBB_SALT_SERVER=$(bbb-conf --salt | grep Salt | awk '{print $2}')
+
+#%# family=auto
+#%# capabilities=autoconf
+
+case $1 in
+    config)
+        cat <<'EOM'
+graph_title BigBlueButton Use
+graph_category bigbluebutton
+graph_vlabel bigbluebutton
+users_connected.label Num of Users connected
+meetings_created.label Num of Meetings created 
+EOM
+    ;;
+    autoconf)
+        bbb-conf --salt > /dev/null
+        if [[ $? = 0 ]]; then echo "yes";
+        else echo "no. BigBluebutton is not running"
+        fi
+    ;;
+    *)
+      ssh root@$SERVER_MUNIN /usr/bin/check_bbb_monitoring/check_bigbluebutton -H $BBB_URL_SERVER -S $BBB_SALT_SERVER   
+    ;;
+esac
+
